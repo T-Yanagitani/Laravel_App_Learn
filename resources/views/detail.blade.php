@@ -3,19 +3,21 @@
 
 @section('content')
 <section id="detail">
-	<h1>Laravel_App_Learn</h1>
-	<section class="detail">
+	<article class="detail">
 		<h3>{{ $articles->title }}</h3>
-	@if( $articles->img != "" )
-		<p>
-			<image src="{{ asset( 'storage/'. $articles->img) }}" class="img-fluid" style="max-width: 100%;,height: auto;">
-		</p>
-	@endif<?= "\n" ?>
+	@isset( $articles->img )
+		<div id="img_box" style="text-align: center;, max-height: 1000px;">
+			<image src="{{ asset( 'storage/'. $articles->img) }}" class="img-fluid" style="max-width: 75%;, height: auto;">
+		</div>
+	@endisset<?= "\n" ?>
 		<p>
 			{!! nl2br(e($articles->article)) !!}
 		</p>
-		<p>投稿者：{{ $articles->poster }}/投稿日時：{{ $articles->created_at }}</p>
-	</section>
+		<p style="text-align: right;">
+			投稿者：{{ $articles->poster }}<br>
+			投稿日時：{{ $create_date }}
+		</p>
+	</article>
 	<p>
 		<a href="{{ route('report.index') }}">インデックスへ戻る</a>
 	</p>

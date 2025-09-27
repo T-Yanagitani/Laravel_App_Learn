@@ -11,7 +11,8 @@ use Illuminate\Support\Facades\Route;
 # GET
 Route::get('/', [ReportController::class, 'index'])->name('report.index');
 Route::get('/detail/{id}', [ReportController::class, 'detail'])->name('report.detail');
-Route::get('/foo', [ReportController::class, 'foo'])->name('report.foo');
+Route::get('/write', [ReportController::class, 'write'])->name('report.write');
+// Route::get('/foo', [ReportController::class, 'foo'])->name('report.foo');
 
 # POST
 Route::post('/report_post', [ReportController::class, 'store'])->name('report.post');

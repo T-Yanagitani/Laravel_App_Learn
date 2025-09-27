@@ -10,17 +10,19 @@
 		<title> @yield('title') - Laravel_App_Learn</title>
 	</head>
 	<body>
-		<div class="container">
-			<nav class="navbar">
-				<ul>
-					<li><a href={{ route('report.index') }}>INDEX</a>
-					<li><a href={{ route('report.foo') }}>foo</a>
+		<header>
+			<nav class="navbar navbar-expand-lg bg-body-tertiary container-fluid">
+				<ul class="navbar-nav">
+					<li class="nav-item"><a href={{ route('report.index') }}>INDEX</a>
 				</ul>
 			</nav>
-			@yield('content')
-			<footer>
-				<address>&copy; Copyright.</address>
-			</footer>
+		</header>
+		<div id="contents" class="container">
+			<h1>Laravel_App_Learn</h1>
+			@yield('content')<?= "\n" ?>
 		</div>
+		<footer class="bg-body-tertiary">
+			<address style="text-align: center;">&copy; Copyright.</address>
+		</footer>
 	</body>
 </html>

@@ -33,7 +33,7 @@ class ReportController extends Controller
 		//
 		$image_path = NULL;
 
-		$request->validate(['image' => 'image|max:4096']);
+		$request->validate(['image' => 'image|dimensions:max_width=1920, max_height=1080|max:4096']);
 		if( isset( $request->image ) ) $image_path = $request->file('image')->store('image');
 		//
 		$report = new Report();
@@ -81,7 +81,14 @@ class ReportController extends Controller
 
 	public function detail( Request $request, $id ) {
 		$articles = Report::with('comments')->withCount('comments')->find($id);
-		return view('detail', ['articles' => $articles]);
+
+		$create_date = $articles->created_at->format( "Y/m/d/ H:i" );
+		// $create_date = $articles->created_at->format( "Y年m月d日H時i分" );
+		return view('detail', ['articles' => $articles, 'create_date' => $create_date]);
+	}
+
+	public function write() {
+		return view('write');
 	}
 	
 	public function foo(Request $request) {
