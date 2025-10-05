@@ -13,9 +13,13 @@ class ReportController extends Controller
     public function index()
     {
         //
-		$articles = Report::withCount('comments')->get();
+		$articles = Report::withCount('comments')->latest()->take(5)->get();
+		// 投稿総数
 		$count = Report::count();
-		return view('index', ['articles' => $articles, 'count' => $count]);
+
+		$today = date('西暦Y年m月d日（D）');
+
+		return view('index', ['articles' => $articles, 'count' => $count, 'today' => $today]);
     }
 
     /**
@@ -33,8 +37,17 @@ class ReportController extends Controller
 		//
 		$image_path = NULL;
 
-		$request->validate(['image' => 'image|dimensions:max_width=1920, max_height=1080|max:4096']);
+		// $request->validate(['image' => 'image|dimensions:max_width=1920, max_height=1080|max:4096']);
+		$request->validate(['image' => [
+			'image',
+			'mimes:jpeg, jpg, png, gif, bmp',
+			'dimensions:max_width=1920, max_height=1920',
+			'max:2048'
+			]
+		]);
+
 		if( isset( $request->image ) ) $image_path = $request->file('image')->store('image');
+
 		//
 		$report = new Report();
 		$report->fill([
@@ -58,9 +71,12 @@ class ReportController extends Controller
     /**
 	 * Show the form for editing the specified resource.
      */
-	public function edit(Report $report)
+	public function edit(Report $report, $id)
     {
 		//
+		$articles = Report::find($id);
+
+		return view( 'edit', ['articles' => $articles, 'id' => $id] );
     }
 	
     /**
@@ -69,6 +85,11 @@ class ReportController extends Controller
 	public function update(Request $request, Report $report)
     {
 		//
+		$report = Report::find( $request->id );
+		$report->article = $request->article;
+		$report->save();
+
+		return redirect()->route( 'report.detail', ['id' => $request->id] );
     }
 	
     /**
@@ -79,16 +100,32 @@ class ReportController extends Controller
 		//
     }
 
-	public function detail( Request $request, $id ) {
+	public function report_list( Request $request ) {
+		$offset = $request->query('offset');
+		$order = $request->query('order');
+		if( !isset( $order ) ) $order = 'desc';
+
+		if( isset( $offset ) ) {
+			$articles = Report::offset( $offset )->limit(10)->orderBy('id', $order)->withCount('comments')->get();
+		} else {
+			$articles = Report::limit(10)->orderBy('id', $order)->withCount('comments')->get();
+		}
+		// 投稿総数
+		$count = Report::count();
+
+		return view('report_list', ['articles' => $articles, 'count' => $count, 'offset' => $offset, 'order' => $order]);
+	}
+
+	// 投稿記事単体表示
+	public function detail( $id ) {
 		$articles = Report::with('comments')->withCount('comments')->find($id);
 
 		$create_date = $articles->created_at->format( "Y/m/d/ H:i" );
-		// $create_date = $articles->created_at->format( "Y年m月d日H時i分" );
-		return view('detail', ['articles' => $articles, 'create_date' => $create_date]);
+		return view('detail', ['articles' => $articles, 'create_date' => $create_date, 'id' => $id]);
 	}
 
 	public function write() {
-		return view('write');
+		return view('write', ['mode' => $mode]);
 	}
 	
 	public function foo(Request $request) {

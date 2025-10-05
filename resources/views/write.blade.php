@@ -12,7 +12,7 @@
 		<input type="text" name="title" class="form-control" maxlength="50" require>
 		<label>コメント</label>
 		<textarea name="article" rows="5" placeholder="コメントを入力" class="form-control" maxlength="1000" require></textarea>
-		<label>画像添付</label>
+		<label>画像添付（対応形式：jpg/jpeg/png/gif/bmp　最大2MB　縦横サイズ1980pxまで）</label>
 		<input type="file" name="image" class="form-control" accept=".jpg, .jpeg, .png, .gif, .bmp"></textarea>
 		<button type="submit" class="btn btn-primary">投稿する</button>
 	</form>

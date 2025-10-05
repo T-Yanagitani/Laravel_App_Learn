@@ -13,7 +13,7 @@ class Comment extends Model
 		'report_id'
 	];
 
-	public function reports() {
+	public function report() {
 		return $this->belongsTo( Report::class );
 	}
 }
