@@ -16,6 +16,7 @@ Route::get('/detail/{id}', [ReportController::class, 'detail'])->name('report.de
 Route::get('/write', [ReportController::class, 'write'])->name('report.write');
 Route::get('/report_list', [ReportController::class, 'report_list'])->name('report.report_list');
 Route::get('/edit/{id}', [ReportController::class, 'edit'])->name('report.edit');
+Route::get('/search', [ReportController::class, 'search'])->name('report.search');
 // Route::get('/foo', [ReportController::class, 'foo'])->name('report.foo');
 
 # POST

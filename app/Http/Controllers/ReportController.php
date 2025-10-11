@@ -110,6 +110,7 @@ class ReportController extends Controller
 		return redirect()->route( 'report.report_list' );
     }
 
+	// 投稿一覧
 	public function report_list( Request $request ) {
 		$offset = $request->query('offset');
 		$order = $request->query('order');
@@ -126,6 +127,44 @@ class ReportController extends Controller
 		$count = Report::count();
 
 		return view('report_list', ['articles' => $articles, 'count' => $count, 'offset' => $offset, 'order' => $order]);
+	}
+
+	// 記事検索
+	public function search( Request $request ) {
+		$keywords = array_filter( explode( " ", trim( $request->query( 'keyword' ) ) ) );
+
+		
+		if( !empty( $keywords ) ) {
+			$mode = match( $request->query('mode') ) {
+				'1' => 'AND',
+				'2' => 'OR',
+				default => 'AND'
+			};
+
+			$query = Report::query();
+
+			if( $mode === 'AND' ) {
+				// AND検索
+				foreach( $keywords as $keyword ) {
+					$query->where( function ( $q ) use ( $keyword ) {
+						$q->where('article', 'LIKE', "%{$keyword}%");
+					});
+				}
+			} elseif ( $mode === 'OR' ) {
+				// OR検索
+				foreach( $keywords as $keyword ) {
+					$query->orWhere( function ( $q ) use ( $keyword ) {
+						$q->orWhere('article', 'LIKE', "%{$keyword}%");
+					});
+				}
+			}
+
+			$result = $query->take(10)->get();
+
+			return view('result_list', ['articles' => $result, 'keywords' => $keywords, 'mode' => $mode ]);
+		}
+
+		return redirect()->route( 'report.index' );
 	}
 
 	// 投稿記事単体表示
