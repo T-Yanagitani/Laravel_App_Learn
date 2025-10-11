@@ -13,13 +13,15 @@ class ReportController extends Controller
     public function index()
     {
         //
+		$importance = Report::withCount('comments')->where('importance', '>=', '2')->latest()->take(5)->get();
+		// $articles = Report::withTrashed()->withCount('comments')->latest()->take(5)->get();
 		$articles = Report::withCount('comments')->latest()->take(5)->get();
 		// 投稿総数
 		$count = Report::count();
 
 		$today = date('西暦Y年m月d日（D）');
 
-		return view('index', ['articles' => $articles, 'count' => $count, 'today' => $today]);
+		return view('index', ['importance' => $importance, 'articles' => $articles, 'count' => $count, 'today' => $today]);
     }
 
     /**
@@ -54,9 +56,12 @@ class ReportController extends Controller
 			'poster' => $request->poster,
 			'title' => $request->title,
 			'article' => $request->article,
-			'img' => $image_path
+			'img' => $image_path,
+			'tags' => $request->tags,
+			'importance' => $request->importance,
 		]);
 		$report->save();
+		
 		return redirect()->route('report.index');
     }
 	
@@ -95,9 +100,14 @@ class ReportController extends Controller
     /**
 	 * Remove the specified resource from storage.
      */
-	public function destroy(Report $report)
+	// 記事削除（物理削除）
+	public function destroy(Report $report, $id)
     {
 		//
+		$article = Report::find( $id );
+		$article->forceDelete();
+
+		return redirect()->route( 'report.report_list' );
     }
 
 	public function report_list( Request $request ) {
@@ -106,8 +116,10 @@ class ReportController extends Controller
 		if( !isset( $order ) ) $order = 'desc';
 
 		if( isset( $offset ) ) {
+			// $articles = Report::offset( $offset )->limit(10)->orderBy('id', $order)->withCount('comments')->withTrashed()->get();
 			$articles = Report::offset( $offset )->limit(10)->orderBy('id', $order)->withCount('comments')->get();
 		} else {
+			// $articles = Report::limit(10)->orderBy('id', $order)->withCount('comments')->withTrashed()->get();
 			$articles = Report::limit(10)->orderBy('id', $order)->withCount('comments')->get();
 		}
 		// 投稿総数
@@ -124,14 +136,33 @@ class ReportController extends Controller
 		return view('detail', ['articles' => $articles, 'create_date' => $create_date, 'id' => $id]);
 	}
 
+	// 新規記事投稿フォーム
 	public function write() {
-		return view('write', ['mode' => $mode]);
+		return view('write');
+		// return view('write', ['mode' => $mode]);
+	}
+
+	// 記事削除（ソフトデリート）
+	public function delete( $id ) {
+		$article = Report::find( $id );
+		$article->delete();
+
+		return redirect()->route('report.report_list');
+	}
+
+	// 記事復元（ソフトデリートロールバック）
+	public function restore( $id ) {
+		$article = Report::find( $id );
+		$article->restore();
+
+		return redirect()->route('report.detail', ['id' => $id] );
 	}
 	
+	// テスト
 	public function foo(Request $request) {
 		$comment = 'Debug message!!';
 		// $comment = $request->comment;
 		return view('foo', ['comment' => $comment]);
 	}
 
-}	
+}

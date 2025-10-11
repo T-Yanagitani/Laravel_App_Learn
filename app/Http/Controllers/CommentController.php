@@ -33,10 +33,10 @@ class CommentController extends Controller
 		$comment->fill([
 			'poster' => $request->poster,
 			'comment' => $request->comment,
-			'report_id' =>$request->report_id
+			'Comment_id' =>$request->Comment_id
 		]);
 		$comment->save();
-		return redirect()->route('report.detail', ['id' => $request->report_id]);
+		return redirect()->route('Comment.detail', ['id' => $request->Comment_id]);
     }
 
     /**
@@ -66,8 +66,28 @@ class CommentController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Comment $comment)
+    public function destroy(Comment $comment, $comment_id, $article_id)
     {
         //
+		$article = Comment::find( $comment_id );
+		$article->forceDelete();
+
+		return redirect()->route( 'report.detail', ['id' => $article_id] );
     }
+
+	// 記事削除（ソフトデリート）
+	public function delete( $comment_id, $article_id ) {
+		$article = Comment::find( $comment_id );
+		$article->delete();
+
+		return redirect()->route('report.detail', ['id' => $article_id] );
+	}
+
+	// 記事復元（ソフトデリートロールバック）
+	public function restore( $id ) {
+		$article = Comment::find( $id );
+		$article->restore();
+
+		return redirect()->route('report.detail', ['id' => $id] );
+	}
 }

@@ -3,9 +3,11 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Comment extends Model
 {
+	use SoftDeletes;
     //
 	protected $fillable = [
 		'poster',
@@ -16,4 +18,6 @@ class Comment extends Model
 	public function report() {
 		return $this->belongsTo( Report::class );
 	}
+
+	protected $dates = ['deleted_at'];
 }

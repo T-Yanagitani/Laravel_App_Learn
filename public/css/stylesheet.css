@@ -18,20 +18,55 @@
 }
 
 #title {
-	border-left: 10px #000 solid;
-	border-bottom: 1px #000 solid;
-	padding-left: 5px;
+	margin: 5px 0;
+	padding: 10px 5px;
+	background-color: cornflowerblue;
 }
 
 #article {
-	border: 1px #000 solid;
-	border-radius: 10px;
 	margin: 5px 0 5px 0;
+	padding: 5px;
 	min-height: 5em;
+	overflow: auto;
+}
+
+#comment>tr>td {
+	vertical-align: middle;
+}
+
+#list_preview {
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	max-width: 0px;
 }
 
 /* class */
 .center {
+	text-align: center;
+}
+
+.f_left {
+	float: left;
+}
+
+.f_right {
+	float: right;
+}
+
+.f_clear {
+	clear: both;
+}
+
+.a_right {
+	text-align: right;
+}
+
+.a_left {
+	text-align: left;
+}
+
+.a_center {
 	text-align: center;
 }
 

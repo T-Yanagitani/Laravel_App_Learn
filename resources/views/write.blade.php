@@ -14,7 +14,15 @@
 		<textarea name="article" rows="5" placeholder="コメントを入力" class="form-control" maxlength="1000" require></textarea>
 		<label>画像添付（対応形式：jpg/jpeg/png/gif/bmp　最大2MB　縦横サイズ1980pxまで）</label>
 		<input type="file" name="image" class="form-control" accept=".jpg, .jpeg, .png, .gif, .bmp"></textarea>
+		<label>タグ（任意）</label>
+		<input type="text" name="tags" class="form-control" maxlength="50">
+		<label>記事重要度</label>
+		<select name="importance" class="form-control" require>
+			<option value="1" selected>通常</option>
+			<option value="2">重要</option>
+		</select>
 		<button type="submit" class="btn btn-primary">投稿する</button>
+		<a href="{{ route('report.index') }}" class="btn btn-primary">投稿をキャンセルする</a>
 	</form>
 	<p>
 		<a href="{{ route('report.index') }}">インデックスへ戻る</a>

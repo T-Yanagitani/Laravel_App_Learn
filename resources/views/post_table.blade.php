@@ -18,7 +18,7 @@
 			〇
 			@endif
 			</td>
-			<td>{{ $comment->article }}</td>
+			<td id="list_preview">{{ $comment->article }}</td>
 			<td class="center">{{ $comment->poster }}</td>
 			<td class="center">{{ $comment->comments_count }}</td>
 			<td class="center">{{ $comment->created_at }}</td>

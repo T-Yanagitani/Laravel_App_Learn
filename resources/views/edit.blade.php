@@ -23,9 +23,20 @@
 		<label class="form-label">コメント</label>
 		<textarea name="article" rows="5" placeholder="コメントを入力" class="form-control" maxlength="1000" require>{{ $articles->article }}</textarea>
 		<button type="submit" class="btn btn-primary">編集を確定する</button>
-	</form>
-	<p>
 		<a href="{{ route('report.detail', ['id' => $id]) }}" class="btn btn-primary">編集をキャンセルする</a>
+	</form>
+	<hr>
+	<h3>投稿を削除する</h3>
+	<p>
+		上の投稿を削除します。<br>
+		削除後、元に戻すことはできません。
+	</p>
+	<p>
+		<form action="{{ route( 'report.delete', $id ) }}" method="POST">
+			@csrf<?= "\n" ?>
+			@method('delete')<?= "\n" ?>
+			<button type="submit" class="btn btn-danger">削除する</button>
+		</form>
 	</p>
 </section>
 @endsection
