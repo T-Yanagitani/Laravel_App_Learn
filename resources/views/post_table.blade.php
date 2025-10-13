@@ -10,18 +10,18 @@
 		</tr>
 	</thead>
 	<tbody>
-@foreach( $articles as $comment )
+@foreach( $articles as $article )
 		<tr>
-			<td class="text-truncate"><a href="{{route('report.detail', ['id' => $comment->id])}}" title="{{ $comment->article }}">{{ $comment->title }}</a></td>
+			<td class="text-truncate"><a href="{{route('report.detail', ['id' => $article->id])}}" title="{{ $article->article }}">{{ $article->title }}</a></td>
 			<td class="a_center">
-			@if( $comment->img != "" )
+			@if( $article->img != "" )
 			〇
 			@endif
 			</td>
-			{{-- <td id="list_preview">{{ $comment->article }}</td> --}}
-			<td class="a_center">{{ $comment->poster }}</td>
-			<td class="a_center">{{ $comment->comments_count }}</td>
-			<td class="a_center">{{ $comment->created_at }}</td>
+			{{-- <td id="list_preview">{{ $article->article }}</td> --}}
+			<td class="a_center">{{ $article->poster }}</td>
+			<td class="a_center">{{ $article->comments_count }}</td>
+			<td class="a_center">{{ $article->created_at }}</td>
 		</tr>
 @endforeach
 	</tbody>

@@ -21,12 +21,12 @@ Route::get('/search', [ReportController::class, 'search'])->name('report.search'
 
 # POST
 Route::post('/report_post', [ReportController::class, 'store'])->name('report.post');
-Route::post('/comment_post', [CommentController::class, 'store'])->name('comment.post');
 Route::post('/report_update', [ReportController::class, 'update'])->name('report.update');
+Route::post('/comment_post', [CommentController::class, 'store'])->name('comment.post');
 // Route::post('/foo', [ReportController::class, 'foo'])->name('report.post.foo');
 
 # DELETE
-Route::delete('/detail_delete/{id}', [ReportController::class, 'delete'])->name('report.delete');
+Route::delete('/article_delete/{id}', [ReportController::class, 'delete'])->name('report.delete');
 Route::delete('/comment_delete/{comment_id}/article/{article_id}', [CommentController::class, 'delete'])->name('comment.delete');
 
 // Breeze auth

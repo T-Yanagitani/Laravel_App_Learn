@@ -15,9 +15,10 @@ class Comment extends Model
 		'report_id'
 	];
 
-	public function report() {
+	protected $dates = ['deleted_at'];
+
+	public function reports() {
 		return $this->belongsTo( Report::class );
 	}
 
-	protected $dates = ['deleted_at'];
 }

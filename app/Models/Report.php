@@ -2,12 +2,13 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Report extends Model
 {
-	use SoftDeletes;
+	use SoftDeletes, HasFactory;
     //
 	protected $fillable = [
 		'poster',
@@ -18,9 +19,14 @@ class Report extends Model
 		'importance'
 	];
 
+	protected $dates = ['deleted_at'];
+
 	public function comments() {
 		return $this->hasMany( Comment::class );
 	}
 
-	protected $dates = ['deleted_at'];
+	public function users() {
+		return $this->belongsTo( User::class );
+	}
+
 }

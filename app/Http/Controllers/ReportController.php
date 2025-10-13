@@ -13,15 +13,15 @@ class ReportController extends Controller
     public function index()
     {
         //
-		$importance = Report::withCount('comments')->where('importance', '>=', '2')->latest()->take(5)->get();
+		// $importance = Report::withCount('comments')->where('importance', '>=', '2')->latest()->take(5)->get();
+		$importance = Report::where('importance', '>=', '2')->latest()->paginate(5);
 		// $articles = Report::withTrashed()->withCount('comments')->latest()->take(5)->get();
-		$articles = Report::withCount('comments')->latest()->take(5)->get();
-		// 投稿総数
-		$count = Report::count();
+		// $articles = Report::withCount('comments')->latest()->take(5)->get();
+		$articles = Report::latest()->paginate(5);
 
 		$today = date('西暦Y年m月d日（D）');
 
-		return view('index', ['importance' => $importance, 'articles' => $articles, 'count' => $count, 'today' => $today]);
+		return view('index', ['importance' => $importance, 'articles' => $articles, 'today' => $today]);
     }
 
     /**
@@ -112,21 +112,15 @@ class ReportController extends Controller
 
 	// 投稿一覧
 	public function report_list( Request $request ) {
-		$offset = $request->query('offset');
 		$order = $request->query('order');
 		if( !isset( $order ) ) $order = 'desc';
 
-		if( isset( $offset ) ) {
-			// $articles = Report::offset( $offset )->limit(10)->orderBy('id', $order)->withCount('comments')->withTrashed()->get();
-			$articles = Report::offset( $offset )->limit(10)->orderBy('id', $order)->withCount('comments')->get();
-		} else {
-			// $articles = Report::limit(10)->orderBy('id', $order)->withCount('comments')->withTrashed()->get();
-			$articles = Report::limit(10)->orderBy('id', $order)->withCount('comments')->get();
-		}
+		$articles = Report::orderBy('id', $order)->paginate(10);
+
 		// 投稿総数
 		$count = Report::count();
 
-		return view('report_list', ['articles' => $articles, 'count' => $count, 'offset' => $offset, 'order' => $order]);
+		return view('report_list', ['articles' => $articles, 'order' => $order]);
 	}
 
 	// 記事検索
@@ -159,7 +153,8 @@ class ReportController extends Controller
 				}
 			}
 
-			$result = $query->take(10)->get();
+			// $result = $query->take(10)->get();
+			$result = $query->paginate(10);
 
 			return view('result_list', ['articles' => $result, 'keywords' => $keywords, 'mode' => $mode ]);
 		}
