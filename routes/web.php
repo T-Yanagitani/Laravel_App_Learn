@@ -3,6 +3,7 @@
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ApiTestController;
 
 use Illuminate\Support\Facades\Route;
 
@@ -17,6 +18,9 @@ Route::get('/write', [ReportController::class, 'write'])->name('report.write');
 Route::get('/report_list', [ReportController::class, 'report_list'])->name('report.report_list');
 Route::get('/edit/{id}', [ReportController::class, 'edit'])->name('report.edit');
 Route::get('/search', [ReportController::class, 'search'])->name('report.search');
+// // API Learning
+Route::get('/api_test', [ApiTestController::class, 'index']);
+
 // Route::get('/foo', [ReportController::class, 'foo'])->name('report.foo');
 
 # POST
