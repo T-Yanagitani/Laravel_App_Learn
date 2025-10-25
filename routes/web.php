@@ -3,7 +3,6 @@
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\ApiTestController;
 
 use Illuminate\Support\Facades\Route;
 
@@ -18,9 +17,6 @@ Route::get('/write', [ReportController::class, 'write'])->name('report.write');
 Route::get('/report_list', [ReportController::class, 'report_list'])->name('report.report_list');
 Route::get('/edit/{id}', [ReportController::class, 'edit'])->name('report.edit');
 Route::get('/search', [ReportController::class, 'search'])->name('report.search');
-// // API Learning
-Route::get('/api_test', [ApiTestController::class, 'index']);
-
 // Route::get('/foo', [ReportController::class, 'foo'])->name('report.foo');
 
 # POST
@@ -35,13 +31,24 @@ Route::delete('/comment_delete/{comment_id}/article/{article_id}', [CommentContr
 
 // Breeze auth
 Route::get('/dashboard', function () {
-    return view('dashboard');
+	return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+	Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
 require __DIR__.'/auth.php';
+
+// // API Learning
+// Route::get('/api_test', [ApiTestController::class, 'index']);
+Route::post('/api_test', function (Request $request) {
+	$data = $request->jason()->all();
+
+	return response()->json([
+		'message' => 'Laravelからの返信です。',
+		'received' => $data,
+	]);
+});
